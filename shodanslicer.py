@@ -1,17 +1,25 @@
+# ShodanSlicer eecutes predefinen Shodan queries using arguments entered by the user
+# Developer: F1nD3r
+#Version: 1.0
+
 import shodan
 import csv
 
-api_key = "YOUR_API_KEY"
+#Ask user for API key
+api_key = input("Please enter your Shodan API key: ")  
 api = shodan.Shodan(api_key)
 
-# Get user input for the search query
-query = input("Enter your search query: ")
+# Define queries arguments based on user input
+org = input("Enter you target organization: ")
+query = "org:"+ org
 
+print("Generating results for" + org)
 try:
     # Search for the user-specified query
     results = api.search(query)
 
     # Open a CSV file for writing the results
+    
     with open('search_results.csv', mode='w') as csv_file:
         fieldnames = ['IP', 'Port', 'Organization', 'Operating System', 'Hostnames', 'Data']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -24,3 +32,5 @@ try:
 
 except shodan.APIError as e:
     print("Error: {}".format(e))
+
+
